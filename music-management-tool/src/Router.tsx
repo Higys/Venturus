@@ -1,6 +1,6 @@
 import {Routes, Route} from 'react-router-dom'
 
-import { Home } from './pages/Home'
+import { Home } from './components/Home/Home'
 import { NewArtist } from './pages/NewArtist';
 import { DefaultLayout } from './layout/DefaultLayout';
 

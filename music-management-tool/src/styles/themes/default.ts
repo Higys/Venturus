@@ -3,12 +3,12 @@ export const defaultTheme = {
     black: '#000',
     
     'light-pink': '#f8f3f9',
+    'light-pink-300': '#e0d2e9',
   
     'gray-100': '#e9e2e9',
     'gray-300': '#C4C4CC',
     'gray-400': '#8D8D99',
     'gray-600': '#323238',
-    'gray-800': '#202024',
   
     'purple-300': '#b34db2',
     'purple-500': '#723172',

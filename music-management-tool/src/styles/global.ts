@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import "@fontsource/roboto";
 
 export const GlobalStyle = createGlobalStyle`
 * { 
@@ -9,7 +10,7 @@ export const GlobalStyle = createGlobalStyle`
 body {
     background: ${props => props.theme['light-pink']};
     color: ${props => props.theme['black']};
-    font-family: sans-serif;
+    font-family: "Roboto", sans-serif;
     font-weight: 400;
     font-size: 1rem; 
 }
