@@ -5,7 +5,10 @@ export const SearchContainer = styled.div`
 
     background: ${(props) => props.theme['white']};
     margin-bottom: 0.5rem;
-    
+
+    .MuiTableRow-hover {
+        background: ${(props) => props.theme['black']};
+    }
 
     div {
         width: 45rem;
@@ -27,3 +30,4 @@ export const IconsContainer = styled.div`
     width: 50%;
     color: ${(props) => props.theme['purple-500']};
 `;
+

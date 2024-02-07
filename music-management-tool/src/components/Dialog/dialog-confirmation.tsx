@@ -11,6 +11,7 @@ import Dialog from '@mui/material/Dialog';
 import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { ButtonCancel, ButtonConfirm } from './style';
 
 
 export interface ConfirmationDialogRawProps {
@@ -53,19 +54,19 @@ export function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
   return (
     
     <Dialog
-      sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 435} }}
+      sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 500, border: 'none'} }}
       maxWidth="xs"
       TransitionProps={{ onEntering: handleEntering }}
       open={open}
       {...other}
-     
+      
     >
       <DialogTitle>Are you sure do you want to delete this artist?</DialogTitle>
       <DialogActions>
-        <Button autoFocus onClick={handleCancel}>
+        <ButtonCancel autoFocus onClick={handleCancel}>
           Cancel
-        </Button>
-        <Button onClick={handleOk}>Ok</Button>
+        </ButtonCancel>
+        <ButtonConfirm onClick={handleOk}>Ok</ButtonConfirm>
       </DialogActions>
     </Dialog>
   );

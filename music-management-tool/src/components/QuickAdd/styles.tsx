@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const QuickAddContainer = styled.div`
 
 background: ${(props) => props.theme['white']};
-    width: 47.5rem;
+
     display: flex;
     flex-direction: column;
     border-radius: 15px;
@@ -77,6 +77,10 @@ export const RatingContainer = styled.div`
         flex-direction: row;
         align-items: center;
         gap: 0.75rem;
+
+        @media only screen and (max-width: 600px) {
+            gap: 0px;
+        }
     }
 
     input[type="radio"]:checked ~ * { 
@@ -98,12 +102,17 @@ export const Button = styled.button`
     color: ${(props) => props.theme['white']};
     font-weight: bold;
     padding: 0 1.25rem;
-    margin-top: 1.5rem;
+    
     cursor: pointer;
 
     &:disabled {
         opacity: 0.6;
         cursor: not-allowed;
         
+    }
+
+    @media only screen and (max-width: 600px) {
+        padding: 0;
+        width: 15%;
     }
 `

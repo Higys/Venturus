@@ -20,11 +20,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Input from '@mui/joy/Input';
 import { IconsContainer, SearchContainer } from './styles';
 import { Search } from '@mui/icons-material';
-import { Tooltip } from '@mui/material';
+import { TextField, Tooltip } from '@mui/material';
 import { useStore } from '../../store/store';
-import { DELETE_ARTIST, Data, deleteArtist, sortArtist } from '../../store/musicReducer';
+import { DELETE_ARTIST, Data, deleteArtist, searchArtist, sortArtist } from '../../store/musicReducer';
 import { ConfirmationDialogRaw } from '../Dialog/dialog-confirmation';
 import { Label } from '@bryntum/grid';
+import { useNavigate } from 'react-router-dom';
+import { Textarea } from '@mui/joy';
+import { red } from '@mui/material/colors';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -89,9 +92,9 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   const renderSortIcon = (headCell: HeadCell) => {
     if(headCell.id === 'actions') { 
       return (
-        <TableCell style={{ borderBottom: 0}}>
+        <TableSortLabel style={{ borderBottom: 0}} hideSortIcon={true}>
           {headCell.label}
-        </TableCell>
+        </TableSortLabel>
       )
     } else {
       return (
@@ -156,11 +159,13 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 
 
 
-export function TableArtist() {
+export function TableArtist(props: any) {
 
   const [state] = useStore();
   const { artists } = state;
   const [, dispatch] = useStore();
+  const [query, setQuery] = useState("")
+  const [filteredArtists, setFilteredArtists] = useState<Data[]>([]);
 
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('rating');
@@ -169,15 +174,26 @@ export function TableArtist() {
   const [rowsPerPage, setRowsPerPage] = React.useState(8);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('confirmation');
+  const [artistToDelete, setArtistToDelete] = React.useState<Data | null>(null);
 
 
-  const handleOnArtistDelete = (artist: Data) => {
-    dispatch(deleteArtist(artist));
+
+  React.useEffect(() => {
+    filterArtists(query)
+  }, [artists])
+
+  let navigate = useNavigate(); 
+  const routeChange = (path: string, artist: Data) =>{ 
+      navigate(path, {state: artist});
+  }
+
+  const handleOnArtistDelete = () => {
+    dispatch(deleteArtist(artistToDelete));
   };
 
   const onDelete = (artist: Data) => {
+    setArtistToDelete(artist)
     setOpen(true);
-    // handleOnArtistDelete(artist);
   }
 
   
@@ -198,11 +214,11 @@ export function TableArtist() {
     setOpen(true);
   };
   
-  const handleClose = (artist: Data, newValue?: string) => {
+  const handleClose = (newValue?: string) => {
     setOpen(false);
     console.log(newValue)
     if (newValue) {
-      handleOnArtistDelete(artist);
+      handleOnArtistDelete();
     }
   };
 
@@ -220,18 +236,42 @@ export function TableArtist() {
     setPage(newPage);
   };
 
+  const handleSearch = () => {
+    dispatch(searchArtist({query}));
+  }
 
+  const handleClickYoutubeIcon = (artist: Data) => {
+    console.log(artist)
+      window.open(artist.url, '_blank', 'noopener,noreferrer');
+  }
+
+  const handleClickEditIcon = (artist: Data) => {
+    routeChange('/edit-artist', artist);
+  }
+
+  const filterArtists = (query: string) => {
+    setQuery(query)
+    if(query === '') {
+      setFilteredArtists(artists)
+    } else {
+      setFilteredArtists(artists.filter((artist: Data) => artist.name.toLowerCase().includes(query.toLowerCase())))
+    }
+  }
+
+  
   // Avoid a layout jump when reaching the last page with empty rows.
   return (
- 
+<div>
+
+
     <Box sx={{ width: '100%' }}>
       <SearchContainer>
         <div>
           <span>Search</span>
         </div>
         <div>
-          <Input/>
-          <Search/>
+          <TextField onChange={event => filterArtists(event.target.value)} />
+          <Search onClick={() => dispatch(searchArtist({query}))}/>
         </div>
 
       </SearchContainer>
@@ -240,6 +280,7 @@ export function TableArtist() {
             sx={{ minWidth: 600 }}
             aria-labelledby="tableTitle"
             size={'medium'}
+            stickyHeader aria-label="sticky table"
           >
             <EnhancedTableHead
               numSelected={selected.length}
@@ -251,14 +292,18 @@ export function TableArtist() {
             />
             <TableBody>
             
-              {artists.map((artist: Data, index: any) => {
+              {filteredArtists.map((artist: Data, index: any) => {
                 return (
                   <TableRow
                     hover
                     role="checkbox"
                     tabIndex={-1}
                     key={artist.id}
-                    sx={{ cursor: 'pointer' }}
+                    sx={{'&.MuiTableRow-root:hover':{
+                      background: '#f8f3f9',
+                    },
+                    cursor: 'pointer',
+                  }}
                   >
                     <TableCell
                       component="th"
@@ -273,26 +318,17 @@ export function TableArtist() {
                       <IconsContainer>
 
                       <Tooltip title="Watch Now">
-                        <YouTubeIcon></YouTubeIcon>
+                        <YouTubeIcon onClick={() => handleClickYoutubeIcon(artist)}></YouTubeIcon>
                       </Tooltip>
                         
                       <Tooltip title="Edit">
-                        <ModeEditIcon></ModeEditIcon>
+                        <ModeEditIcon onClick={() => handleClickEditIcon(artist)}></ModeEditIcon>
                       </Tooltip>  
                         
                         <Tooltip title="Delete">
                           <DeleteIcon onClick={() => onDelete(artist)}></DeleteIcon>
                         </Tooltip>
                       </IconsContainer>
-                      <Box sx={{ width: '100%', maxWidth: 360}}>
-                      <ConfirmationDialogRaw 
-          id="confirmation-dialog"
-          keepMounted
-          open={open}
-          onClose={(value) => handleClose(artist, value)}
-          value={value}
-        />
-        </Box>
                     </TableCell>
                   </TableRow>
                 );
@@ -312,5 +348,14 @@ export function TableArtist() {
 
 
     </Box>
+    <ConfirmationDialogRaw 
+      id="confirmation-dialog"
+      keepMounted
+      open={open}
+      onClose={(value) => handleClose(value)}
+      value={value}
+    />
+    </div>
   );
 }
+

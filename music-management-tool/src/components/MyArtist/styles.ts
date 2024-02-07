@@ -10,6 +10,9 @@ export const MyArtistContainer = styled.div`
     border-radius: 15px;
     overflow: hidden;
 
+    @media only screen and (max-width: 600px) {
+        width: 21.5rem;
+    }
 `;
 
 export const HeaderMyArtists = styled.div`
@@ -26,17 +29,14 @@ export const HeaderMyArtists = styled.div`
     border-bottom: 1px solid #C4C4CC;
     
 
-    span:nth-child(2){
+    button:nth-child(2){
         background: linear-gradient(90deg, rgba(221,42,96,1) 35%, rgba(105,45,135,1) 100%);
         color: white;
         font-size: 1.5rem;
         width: 5%;
         border-radius: 5px;
-        height: calc(3vh);
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
+        height: calc(4vh);
+        font-weight: 600;
     }
     
     span:first-of-type {

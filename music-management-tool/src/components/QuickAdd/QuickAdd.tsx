@@ -5,13 +5,15 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 import { useStore } from "../../store/store";
 import { Data, addArtist, deleteArtist } from "../../store/musicReducer";
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
+import { Input, Radio, TextField } from "@mui/material";
+import { NewArtist } from "../../NewArtist";
 
 const arrayMaxRating = new Array(1,2,3,4,5,6,7,8,9,10)
 
 const newArtistFormSchema = zod.object({
-    name: zod.string().min(1,'Name is required'),
-    link: zod.string().min(1,'Link is required'),
+    name: zod.string({required_error: "Required",}),
+    link: zod.string().regex(new RegExp("(youtu.*be.*)\/(watch\?v=|embed\/|v|shorts|)(.*?((?=[&#?])|$))"))
 })
 
 
@@ -20,8 +22,14 @@ const newArtistFormSchema = zod.object({
 export function QuickAdd(addRow: any, props: any) {
 
     const [, dispatch] = useStore();
+    const [errorUrl, setErrorUrl] = useState(false);
+    const [inputUrl, setInputUrl] = useState('');
+    const [inputName, setInputName] = useState('');
+    const [errorName, setErrorName] = useState(false);
+    const [inputRating, setInputRating] = useState('');
+    const [errorRating, setErrorRating] = useState(false);
 
-    const {register, handleSubmit, watch, reset }= useForm({
+    const {register, handleSubmit, watch, reset, trigger, clearErrors}= useForm({
         resolver: zodResolver(newArtistFormSchema),
         defaultValues: {
             id: '',
@@ -31,20 +39,55 @@ export function QuickAdd(addRow: any, props: any) {
         }
     })
 
+    const handeUrlChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setInputUrl(e.target.value);
+        if(errorUrl) {
+            setErrorUrl(false)
+        }
+    }
+
+    const handeNameChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setInputName(e.target.value);
+        if(errorName) {
+            setErrorName(false)
+        }
+    }
+
+    const handeRatingChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setInputRating(e.target.value);
+        if(errorRating) {
+            setErrorRating(false)
+        }
+    }
     const handleOnArtistAdd = (data: Data) => {
         dispatch(addArtist((data)));
     };
 
-    const onSubmit = (data: any) => {
-        data.id = new Date().getUTCMilliseconds();
-        data.rating = rating;
-        handleOnArtistAdd(data);
-        reset();
-    };
+    const onSubmit = async () => {
+        clearErrors()
+        const triggerFlag = await trigger();
+        if(triggerFlag) {
+            setErrorUrl(false)
+            let newArtist = {
+                id: new Date().getUTCMilliseconds(),
+                name: inputName,
+                url: inputUrl,
+                rating: Number(inputRating)
+            }
+            console.log(newArtist)
+            handleOnArtistAdd(newArtist);
+            setInputName('')
+            setInputUrl('')
+            setInputRating('')
+            setErrorName(false)
+            setErrorRating(false)
+            setErrorUrl(false)
+            reset();
+        } else {
+            setErrorUrl(true)
+        }
 
-    const name = watch('name');
-    const link = watch('link');
-    const rating = watch('rating');
+    };
 
     return (
         <QuickAddContainer>
@@ -57,57 +100,78 @@ export function QuickAdd(addRow: any, props: any) {
                 <form onSubmit={handleSubmit(onSubmit)}>
                 <FormContainer>
                     <label htmlFor="name">Artist Name</label>
-                    <input type="text" placeholder="Queen" {...register('name')}/>
+                    <TextField 
+                        type="text" 
+                        placeholder="Queen" 
+                        {...register('name')}
+                        onChange={(e) => handeNameChange(e)}
+                        value={inputName}
+                    />
 
                     <label htmlFor="name">Favorite music video (Youtube)</label>
-                    <input type="text" placeholder="https://youtube.com/watch?v=..." {...register('link')}/>
+                    <TextField
+                        {...register('link')}
+                        type="text" 
+                        placeholder="https://youtube.com/watch?v=..." 
+                        error={errorUrl}
+                        helperText={errorUrl ? "Invalid URL" : " "}
+                        onChange={(e) => handeUrlChange(e)}
+                        value={inputUrl}
+
+                        />
 
                     <label htmlFor="rating">Rating</label>
                     <RatingContainer>
                             <div>
-                                <input id="one" type="radio" value="1" {...register("rating", {valueAsNumber: true})} style={{accentColor:'#723172'}}/>
+                                <Radio 
+                                    checked={inputRating === '1'}
+                                    id="one" 
+                                    value="1" 
+                                    style={{accentColor:'#723172'}}
+                                    onChange={(e) => handeRatingChange(e)}
+                                />
                                 <label htmlFor="one">1</label>
                             </div>
                             <div>
-                                <input id="two" type="radio" value="2" {...register("rating")} style={{accentColor:'#723172'}}/>
+                                <Radio checked={inputRating === '2'} id="two" value="2" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
                                 <label htmlFor="two">2</label>
                             </div>
                             <div>
-                                <input id="three"type="radio" value="3" {...register("rating")} style={{accentColor:'#723172'}}/>
+                                <Radio checked={inputRating === '3'} id="three" value="3" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
                                 <label htmlFor="three">3</label>
                             </div>
                             <div>
-                                <input id="four"  type="radio" value="4" {...register("rating")} style={{accentColor:'#723172'}}/>
+                                <Radio checked={inputRating === '4'} id="four"  value="4" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
                                 <label htmlFor="four">4</label>
                             </div>
                             <div>
-                                <input id="five" type="radio" value="5" {...register("rating")} style={{accentColor:'#723172'}}/>
+                                <Radio checked={inputRating === '5'} id="five" value="5" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
                                 <label htmlFor="five">5</label>
                             </div>
                             <div>
-                                <input id="six" type="radio" value="6" {...register("rating")} style={{accentColor:'#723172'}}/>
+                                <Radio checked={inputRating === '6'} id="six" value="6" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
                                 <label htmlFor="six">6</label>
                             </div>
                             <div>
-                                <input id="seven" type="radio" value="7" {...register("rating")} style={{accentColor:'#723172'}}/>
+                                <Radio checked={inputRating === '7'} id="seven" value="7" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
                                 <label htmlFor="seven">7</label>
                             </div>
                             <div>
-                                <input id="eight" type="radio" value="7" {...register("rating")} style={{accentColor:'#723172'}}/>
+                                <Radio checked={inputRating === '8'} id="eight" value="7" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
                                 <label htmlFor="eight">8</label>
                             </div>
                             <div>
-                                <input id="nine" type="radio" value="9" {...register("rating")} style={{accentColor:'#723172'}}/>
+                                <Radio checked={inputRating === '9'} id="nine" value="9" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
                                 <label htmlFor="nine">9</label>
                             </div>
                             <div>
-                                <input id="ten" type="radio" value="10" {...register("rating")} style={{accentColor:'#723172'}}/>
+                                <Radio checked={inputRating === '10'} id="ten" value="10" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
                                 <label htmlFor="ten">10</label>
                             </div>
                     </RatingContainer>
                     
                     <ButtonContainer>
-                        <Button disabled={!name || !link || !rating} type="submit">Add</Button>
+                        <Button disabled={!inputName || !inputUrl || !inputRating} type="button" onClick={() => onSubmit()}>Add</Button>
                     </ButtonContainer>
                 </FormContainer>
 

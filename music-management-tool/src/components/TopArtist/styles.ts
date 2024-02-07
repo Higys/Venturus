@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const TopArtistContainer = styled.div`
 
     background: ${(props) => props.theme['white']};
-    width: 47.5rem;
     display: flex;
     flex-direction: column;
     border-radius: 15px;
@@ -68,4 +67,11 @@ export const TopFiveItem = styled.div`
     justify-content: space-between;
     padding-left: 15px;
     padding-right: 15px;
+    cursor: pointer;
+    border: 1px solid transparent;
+
+    &:hover {
+        border: 1px solid #dd2a60;
+        color: #dd2a60;
+    }
 `;

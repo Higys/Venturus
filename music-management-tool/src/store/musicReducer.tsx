@@ -6,6 +6,8 @@ export const DELETE_ARTIST = 'DELETE_ARTIST';
 
 export const SORT_ARTIST = 'SORT_ARTIST';
 
+export const SEARCH_ARTIST = 'SEARCH_ARTIST';
+
 export interface Data {
   id: number;
   name: string;
@@ -69,6 +71,11 @@ export const sortArtist =  (payload: any) => ({
   payload,
 });
 
+export const searchArtist =  (payload: any) => ({
+  type: SEARCH_ARTIST,
+  payload,
+});
+
 export const musicReducer = (state = initialState, action: any) => {
   
   switch (action.type) {
@@ -77,7 +84,7 @@ export const musicReducer = (state = initialState, action: any) => {
       {        
         return {
         ...state,
-        artists: state.artists.concat(action.artist),
+        artists: [...state.artists, action.artist],
         };
       }
 
@@ -91,7 +98,6 @@ export const musicReducer = (state = initialState, action: any) => {
 
     case SORT_ARTIST:
       {      
-        console.log(action)
         let artistsOrder = sortByProperty(state.artists, action.payload.property, action.payload.order);
         return {
         ...state,
