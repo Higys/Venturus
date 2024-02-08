@@ -2,6 +2,8 @@ import { sortByProperty } from "../utils/sortArtistByProperty";
 
 export const ADD_ARTIST = 'ADD_ARTIST';
 
+export const EDIT_ARTIST = 'EDIT_ARTIST';
+
 export const DELETE_ARTIST = 'DELETE_ARTIST';
 
 export const SORT_ARTIST = 'SORT_ARTIST';
@@ -13,6 +15,8 @@ export interface Data {
   name: string;
   rating: number;
   url?: string;
+  description?: string;
+  genre?: string[];
   actions?: number;
 }
 
@@ -23,6 +27,8 @@ export const initialState = {
       name: 'Led Zepelin',
       rating: 10,
       url: 'https://www.youtube.com/watch?v=JGwWNGJ',
+      genre: ['Rock', 'Classic'],
+      description: 'One of the best rock bands in the world',
       actions: 1
     },
     {
@@ -61,6 +67,11 @@ export const addArtist = (artist: any) => ({
   artist,
 });
 
+export const editArtist = (artist: any) => ({
+  type: EDIT_ARTIST,
+  artist,
+});
+
 export const deleteArtist = (artist: any) => ({
   type: DELETE_ARTIST,
   artist,
@@ -86,6 +97,16 @@ export const musicReducer = (state = initialState, action: any) => {
         ...state,
         artists: [...state.artists, action.artist],
         };
+      }
+
+    case EDIT_ARTIST: 
+      { 
+        let editedArtist = state.artists.map((artist: any) => artist.id === action.artist.id ? action.artist : artist)
+        return {
+        ...state,
+        artists: editedArtist,
+        }   
+
       }
 
     case DELETE_ARTIST: 

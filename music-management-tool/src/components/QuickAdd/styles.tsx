@@ -10,6 +10,10 @@ background: ${(props) => props.theme['white']};
     overflow: hidden;
     height: calc(42vh);
 
+    @media only screen and (max-width: 600px) {
+        height: 70vh;
+    }
+
 `;
 
 export const HeaderAddArtists = styled.div`
@@ -72,6 +76,11 @@ export const RatingContainer = styled.div`
     justify-content: space-between;
     flex-direction: row;
 
+    @media only screen and (max-width: 600px) {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+    }
+
     div {
         display: flex;
         flex-direction: row;
@@ -113,6 +122,6 @@ export const Button = styled.button`
 
     @media only screen and (max-width: 600px) {
         padding: 0;
-        width: 15%;
+        width: 25%;
     }
 `

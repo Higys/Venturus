@@ -26,7 +26,7 @@ export const LayoutContainer = styled.div`
     flex-direction: column;
 
     @media only screen and (max-width: 600px) {
-    
+    height: 140vh;
 }
 
 `;

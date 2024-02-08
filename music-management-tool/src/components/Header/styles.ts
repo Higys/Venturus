@@ -11,11 +11,15 @@ export const HeaderContainer = styled.header`
         display: flex;
         align-items: center;
         gap: 5px;
+
+
     }
 
     span {
         color: ${(props) => props.theme['white']}
     }
+
+
 `;
 
 export const WhiteCircle = styled.span`
@@ -36,3 +40,8 @@ export const WhiteCircle = styled.span`
         font-weight: 600;
     }
 `;
+
+export const ImageLogo =  styled.img`
+    width: 2.5rem;
+    height: 2.5rem;
+`

@@ -216,7 +216,6 @@ export function TableArtist(props: any) {
   
   const handleClose = (newValue?: string) => {
     setOpen(false);
-    console.log(newValue)
     if (newValue) {
       handleOnArtistDelete();
     }
@@ -241,7 +240,6 @@ export function TableArtist(props: any) {
   }
 
   const handleClickYoutubeIcon = (artist: Data) => {
-    console.log(artist)
       window.open(artist.url, '_blank', 'noopener,noreferrer');
   }
 

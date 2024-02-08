@@ -1,8 +1,8 @@
 import {Routes, Route} from 'react-router-dom'
 
-import { Home } from './components/Home/Home'
-import { NewArtist } from './NewArtist';
-import { DefaultLayout } from './layout/DefaultLayout';
+import { Home } from './components/Home'
+import { NewArtist } from './components/NewArtist';
+import { DefaultLayout } from './layout';
 
 export function Router() {
     return (

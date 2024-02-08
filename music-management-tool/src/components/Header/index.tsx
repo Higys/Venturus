@@ -1,10 +1,10 @@
-import { HeaderContainer, WhiteCircle } from "./styles";
+import { HeaderContainer, ImageLogo, WhiteCircle } from "./styles";
 
 export function Header() {
     return (
         <HeaderContainer>
             <div>
-                <span>Logo</span>
+                <ImageLogo src="./src/assets/logo.png"></ImageLogo>
                 <span>Music Management Tool</span>
             </div>
             <div>

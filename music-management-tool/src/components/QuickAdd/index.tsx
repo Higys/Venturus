@@ -7,7 +7,7 @@ import { useStore } from "../../store/store";
 import { Data, addArtist, deleteArtist } from "../../store/musicReducer";
 import React, { ChangeEvent, useState } from "react";
 import { Input, Radio, TextField } from "@mui/material";
-import { NewArtist } from "../../NewArtist";
+import { NewArtist } from "../NewArtist";
 
 const arrayMaxRating = new Array(1,2,3,4,5,6,7,8,9,10)
 
@@ -29,7 +29,7 @@ export function QuickAdd(addRow: any, props: any) {
     const [inputRating, setInputRating] = useState('');
     const [errorRating, setErrorRating] = useState(false);
 
-    const {register, handleSubmit, watch, reset, trigger, clearErrors}= useForm({
+    const {register, handleSubmit, reset, trigger, clearErrors}= useForm({
         resolver: zodResolver(newArtistFormSchema),
         defaultValues: {
             id: '',
@@ -39,21 +39,21 @@ export function QuickAdd(addRow: any, props: any) {
         }
     })
 
-    const handeUrlChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleUrlChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setInputUrl(e.target.value);
         if(errorUrl) {
             setErrorUrl(false)
         }
     }
 
-    const handeNameChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleNameChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setInputName(e.target.value);
         if(errorName) {
             setErrorName(false)
         }
     }
 
-    const handeRatingChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleRatingChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setInputRating(e.target.value);
         if(errorRating) {
             setErrorRating(false)
@@ -74,7 +74,6 @@ export function QuickAdd(addRow: any, props: any) {
                 url: inputUrl,
                 rating: Number(inputRating)
             }
-            console.log(newArtist)
             handleOnArtistAdd(newArtist);
             setInputName('')
             setInputUrl('')
@@ -104,8 +103,11 @@ export function QuickAdd(addRow: any, props: any) {
                         type="text" 
                         placeholder="Queen" 
                         {...register('name')}
-                        onChange={(e) => handeNameChange(e)}
+                        onChange={(e) => handleNameChange(e)}
                         value={inputName}
+                        sx={{'& .MuiOutlinedInput-root.Mui-focused': { '& .MuiOutlinedInput-notchedOutline': {
+                            border: '1px solid #723172'
+                        }}}}
                     />
 
                     <label htmlFor="name">Favorite music video (Youtube)</label>
@@ -115,9 +117,11 @@ export function QuickAdd(addRow: any, props: any) {
                         placeholder="https://youtube.com/watch?v=..." 
                         error={errorUrl}
                         helperText={errorUrl ? "Invalid URL" : " "}
-                        onChange={(e) => handeUrlChange(e)}
+                        onChange={(e) => handleUrlChange(e)}
                         value={inputUrl}
-
+                        sx={{'& .MuiOutlinedInput-root.Mui-focused': { '& .MuiOutlinedInput-notchedOutline': {
+                            border: '1px solid #723172'
+                        }}}}
                         />
 
                     <label htmlFor="rating">Rating</label>
@@ -128,44 +132,44 @@ export function QuickAdd(addRow: any, props: any) {
                                     id="one" 
                                     value="1" 
                                     style={{accentColor:'#723172'}}
-                                    onChange={(e) => handeRatingChange(e)}
+                                    onChange={(e) => handleRatingChange(e)}
                                 />
                                 <label htmlFor="one">1</label>
                             </div>
                             <div>
-                                <Radio checked={inputRating === '2'} id="two" value="2" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
+                                <Radio checked={inputRating === '2'} id="two" value="2" style={{accentColor:'#723172'}} onChange={(e) => handleRatingChange(e)}/>
                                 <label htmlFor="two">2</label>
                             </div>
                             <div>
-                                <Radio checked={inputRating === '3'} id="three" value="3" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
+                                <Radio checked={inputRating === '3'} id="three" value="3" style={{accentColor:'#723172'}} onChange={(e) => handleRatingChange(e)}/>
                                 <label htmlFor="three">3</label>
                             </div>
                             <div>
-                                <Radio checked={inputRating === '4'} id="four"  value="4" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
+                                <Radio checked={inputRating === '4'} id="four"  value="4" style={{accentColor:'#723172'}} onChange={(e) => handleRatingChange(e)}/>
                                 <label htmlFor="four">4</label>
                             </div>
                             <div>
-                                <Radio checked={inputRating === '5'} id="five" value="5" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
+                                <Radio checked={inputRating === '5'} id="five" value="5" style={{accentColor:'#723172'}} onChange={(e) => handleRatingChange(e)}/>
                                 <label htmlFor="five">5</label>
                             </div>
                             <div>
-                                <Radio checked={inputRating === '6'} id="six" value="6" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
+                                <Radio checked={inputRating === '6'} id="six" value="6" style={{accentColor:'#723172'}} onChange={(e) => handleRatingChange(e)}/>
                                 <label htmlFor="six">6</label>
                             </div>
                             <div>
-                                <Radio checked={inputRating === '7'} id="seven" value="7" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
+                                <Radio checked={inputRating === '7'} id="seven" value="7" style={{accentColor:'#723172'}} onChange={(e) => handleRatingChange(e)}/>
                                 <label htmlFor="seven">7</label>
                             </div>
                             <div>
-                                <Radio checked={inputRating === '8'} id="eight" value="7" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
+                                <Radio checked={inputRating === '8'} id="eight" value="7" style={{accentColor:'#723172'}} onChange={(e) => handleRatingChange(e)}/>
                                 <label htmlFor="eight">8</label>
                             </div>
                             <div>
-                                <Radio checked={inputRating === '9'} id="nine" value="9" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
+                                <Radio checked={inputRating === '9'} id="nine" value="9" style={{accentColor:'#723172'}} onChange={(e) => handleRatingChange(e)}/>
                                 <label htmlFor="nine">9</label>
                             </div>
                             <div>
-                                <Radio checked={inputRating === '10'} id="ten" value="10" style={{accentColor:'#723172'}} onChange={(e) => handeRatingChange(e)}/>
+                                <Radio checked={inputRating === '10'} id="ten" value="10" style={{accentColor:'#723172'}} onChange={(e) => handleRatingChange(e)}/>
                                 <label htmlFor="ten">10</label>
                             </div>
                     </RatingContainer>

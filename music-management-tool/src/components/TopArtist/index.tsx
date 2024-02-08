@@ -18,8 +18,6 @@ export function TopArtist() {
         let artistList = sortByProperty(artists, 'rating', 'desc');
         artistList = artistList.slice(0,5);
 
-        console.log(artistList)
-
         return artistList.map((artist: Data) => {
             return (
                 <TopFiveItem key={artist.id} onClick={() => handleClickEditIcon(artist)}>

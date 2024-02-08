@@ -1,5 +1,5 @@
 import { MyArtist } from "../MyArtist";
-import { QuickAdd } from "../QuickAdd/QuickAdd";
+import { QuickAdd } from "../QuickAdd";
 import { TopArtist } from "../TopArtist";
 import { HomeContainer, RightContainer } from "./styles";
 
