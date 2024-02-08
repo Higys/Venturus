@@ -51,4 +51,6 @@ export const TableMyArtists = styled.div`
     height: calc(77vh);
     margin: 5px;
     padding: 5px;
+    overflow-x: hidden;
+    overflow-y: auto;
 `;

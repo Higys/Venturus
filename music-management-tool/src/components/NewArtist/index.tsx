@@ -65,32 +65,12 @@ export function NewArtist() {
             setInputId(location.state.id);
             setInputName(location.state.name);
             setInputUrl(location.state.url);
-            setErrorUrl(false)
             setInputDescription(location.state.description);
-            
-            // falta genero
-
             setInputRating(location.state.rating.toString());          
         }
         
     }, [isEdit]);
    
-    
-
-    // setArtistToEdit(location.state)
-    // console.log(artistToEdit)
-    
-    // if(location.state) {
-    //     setInputId(location.state.id);
-    //     setInputName(location.state.name);
-    //     setInputUrl(location.state.link);
-    //     setInputDescription(location.state.description);
-    //     setInputGenre(location.state.genre);
-    //     setInputRating(location.state.rating);
-
-    //     console.log(inputId, inputName, inputUrl, inputDescription, inputRating, inputGenre)
-    //     location.state = null
-    // }
 
     const onSubmit = async () => {
         clearErrors()

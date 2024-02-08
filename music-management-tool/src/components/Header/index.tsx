@@ -1,10 +1,13 @@
+import { Link } from "react-router-dom";
 import { HeaderContainer, ImageLogo, WhiteCircle } from "./styles";
 
 export function Header() {
     return (
         <HeaderContainer>
             <div>
-                <ImageLogo src="./src/assets/logo.png"></ImageLogo>
+                <Link to="/">
+                    <ImageLogo src="./src/assets/logo.png"></ImageLogo>
+                </Link>
                 <span>Music Management Tool</span>
             </div>
             <div>
